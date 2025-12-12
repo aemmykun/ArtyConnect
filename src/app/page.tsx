@@ -1,64 +1,110 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { createServerSupabaseClient } from "@/lib/supabase/server"
+import Link from "next/link"
+import { redirect } from "next/navigation"
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createServerSupabaseClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/login")
+  }
+
+  // Fetch Organization Membership
+  const { data: membership } = await supabase
+    .from("organization_members")
+    .select("*, organizations(*)")
+    .eq("user_id", user.id)
+    .single()
+
+  if (!membership) {
+    redirect("/onboarding")
+  }
+
+  const org = membership.organizations
+
+  const signOut = async () => {
+    "use server"
+    const supabase = await createServerSupabaseClient()
+    await supabase.auth.signOut()
+    redirect("/login")
+  }
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="container" style={{ padding: '4rem 1.5rem' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', background: 'linear-gradient(to right, var(--primary), #a855f7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          ArtyConnect
+        </h1>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <span style={{ color: 'var(--text-muted)' }}>{org.name}</span>
+          <div style={{ width: '1px', height: '24px', background: 'var(--border)' }}></div>
+          <span>{user.email}</span>
+          <form action={signOut}>
+            <button className="btn" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              Sign Out
+            </button>
+          </form>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <main>
+        <div className="card">
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Dashboard</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
+            Welcome to the <strong>{org.name}</strong> workspace.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ padding: '1.5rem', background: 'var(--background)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>My Role</h3>
+              <div style={{ display: 'inline-block', padding: '0.25rem 0.75rem', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)', borderRadius: '999px', fontSize: '0.875rem', fontWeight: 600, textTransform: 'capitalize' }}>
+                {membership.role}
+              </div>
+            </div>
+
+            <div style={{ padding: '1.5rem', background: 'var(--background)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Organization ID</h3>
+              <code style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{org.id}</code>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '3rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            {/* Common Link for Everyone */}
+            <Link href="/my-jobs" className="card" style={{ textAlign: 'center', transition: 'transform 0.2s', cursor: 'pointer', textDecoration: 'none', color: 'inherit', border: '1px solid var(--primary)' }}>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: 'var(--primary)' }}>My Jobs</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>View your assigned tasks</p>
+            </Link>
+
+            {/* Manager/Owner Links */}
+            {['owner', 'manager'].includes(membership.role) && (
+              <>
+                <Link href="/properties" className="card" style={{ textAlign: 'center', transition: 'transform 0.2s', cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
+                  <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Properties</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Manage houses</p>
+                </Link>
+
+                <Link href="/rooms" className="card" style={{ textAlign: 'center', transition: 'transform 0.2s', cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
+                  <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Rooms</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Manage units & status</p>
+                </Link>
+
+                <Link href="/jobs" className="card" style={{ textAlign: 'center', transition: 'transform 0.2s', cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
+                  <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>All Jobs</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Schedule cleaning tasks</p>
+                </Link>
+
+                <Link href="/billing" className="card" style={{ textAlign: 'center', transition: 'transform 0.2s', cursor: 'pointer', textDecoration: 'none', color: 'inherit' }}>
+                  <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Billing</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Manage subscription</p>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </main>
     </div>
