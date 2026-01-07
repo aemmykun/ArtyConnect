@@ -2,6 +2,7 @@
 
 import { createProperty } from "../actions"
 import { useState, useRef } from "react"
+import styles from "./add-property-form.module.css"
 
 export function AddPropertyForm() {
     const [error, setError] = useState("")
@@ -23,16 +24,16 @@ export function AddPropertyForm() {
     }
 
     return (
-        <div className="card" style={{ position: 'sticky', top: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Add Property</h2>
-            <form ref={formRef} action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div className={`card ${styles.formContainer}`}>
+            <h2 className={styles.title}>Add Property</h2>
+            <form ref={formRef} action={handleSubmit} className={styles.form}>
                 {error && (
-                    <div style={{ padding: '0.75rem', borderRadius: 'var(--radius)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontSize: '0.875rem' }}>
+                    <div className={styles.error}>
                         {error}
                     </div>
                 )}
                 <div>
-                    <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="name" className={styles.label}>
                         Property Name
                     </label>
                     <input
@@ -45,7 +46,7 @@ export function AddPropertyForm() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="address" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="address" className={styles.label}>
                         Address
                     </label>
                     <input

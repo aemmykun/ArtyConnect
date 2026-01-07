@@ -2,6 +2,7 @@
 
 import { createJob } from "../actions"
 import { useState, useRef } from "react"
+import styles from "./add-job-form.module.css"
 
 export function AddJobForm({ properties, members }: { properties: any[], members: any[] }) {
     const [error, setError] = useState("")
@@ -23,17 +24,17 @@ export function AddJobForm({ properties, members }: { properties: any[], members
     }
 
     return (
-        <div className="card" style={{ position: 'sticky', top: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Schedule Job</h2>
-            <form ref={formRef} action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div className={`card ${styles.formCard}`}>
+            <h2 className={styles.title}>Schedule Job</h2>
+            <form ref={formRef} action={handleSubmit} className={styles.form}>
                 {error && (
-                    <div style={{ padding: '0.75rem', borderRadius: 'var(--radius)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontSize: '0.875rem' }}>
+                    <div className={styles.error}>
                         {error}
                     </div>
                 )}
 
                 <div>
-                    <label htmlFor="property_id" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="property_id" className={styles.label}>
                         Property
                     </label>
                     <select
@@ -50,7 +51,7 @@ export function AddJobForm({ properties, members }: { properties: any[], members
                 </div>
 
                 <div>
-                    <label htmlFor="assigned_to" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="assigned_to" className={styles.label}>
                         Assign To (Optional)
                     </label>
                     <select
@@ -68,7 +69,7 @@ export function AddJobForm({ properties, members }: { properties: any[], members
                 </div>
 
                 <div>
-                    <label htmlFor="scheduled_date" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="scheduled_date" className={styles.label}>
                         Date & Time
                     </label>
                     <input

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { AddPropertyForm } from "./add-property-form"
 import { checkSubscription } from "@/lib/subscription"
+import styles from "./properties.module.css"
 
 export default async function PropertiesPage() {
     const supabase = await createServerSupabaseClient()
@@ -34,29 +35,29 @@ export default async function PropertiesPage() {
         .order("created_at", { ascending: false })
 
     return (
-        <div className="container" style={{ padding: '4rem 1.5rem' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+        <div className={`container ${styles.pageContainer}`}>
+            <header className={styles.header}>
                 <div>
-                    <Link href="/" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.5rem', display: 'inline-block' }}>
+                    <Link href="/" className={styles.backLink}>
                         &larr; Back to Dashboard
                     </Link>
-                    <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Properties</h1>
+                    <h1 className={styles.title}>Properties</h1>
                 </div>
             </header>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem' }}>
+            <div className={styles.contentGrid}>
                 {/* List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className={styles.propertyList}>
                     {properties?.length === 0 ? (
-                        <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
-                            <p style={{ color: 'var(--text-muted)' }}>No properties found. Add your first one!</p>
+                        <div className={`card ${styles.emptyState}`}>
+                            <p className={styles.emptyText}>No properties found. Add your first one!</p>
                         </div>
                     ) : (
                         properties?.map((prop) => (
-                            <div key={prop.id} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div key={prop.id} className={`card ${styles.propertyCard}`}>
                                 <div>
-                                    <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{prop.name}</h3>
-                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{prop.address || "No address provided"}</p>
+                                    <h3 className={styles.propertyName}>{prop.name}</h3>
+                                    <p className={styles.propertyAddress}>{prop.address || "No address provided"}</p>
                                 </div>
                             </div>
                         ))

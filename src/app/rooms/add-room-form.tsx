@@ -2,6 +2,7 @@
 
 import { createRoom } from "../actions"
 import { useState } from "react"
+import styles from "./add-room-form.module.css"
 
 export function AddRoomForm({ properties }: { properties: { id: string, name: string }[] }) {
     const [loading, setLoading] = useState(false)
@@ -29,29 +30,29 @@ export function AddRoomForm({ properties }: { properties: { id: string, name: st
     if (properties.length === 0) {
         return (
             <div className="card">
-                <p style={{ color: 'var(--text-muted)' }}>You need to add a property first.</p>
+                <p className={styles.emptyMessage}>You need to add a property first.</p>
             </div>
         )
     }
 
     return (
         <div className="card">
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Add New Room</h2>
+            <h2 className={styles.title}>Add New Room</h2>
 
-            <form id="add-room-form" action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <form id="add-room-form" action={handleSubmit} className={styles.form}>
                 {error && (
-                    <div style={{ padding: '0.75rem', borderRadius: 'var(--radius)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontSize: '0.875rem' }}>
+                    <div className={styles.errorMessage}>
                         {error}
                     </div>
                 )}
                 {success && (
-                    <div style={{ padding: '0.75rem', borderRadius: 'var(--radius)', background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', fontSize: '0.875rem' }}>
+                    <div className={styles.successMessage}>
                         Room added successfully!
                     </div>
                 )}
 
                 <div>
-                    <label htmlFor="property_id" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="property_id" className={styles.label}>
                         Property
                     </label>
                     <select id="property_id" name="property_id" className="input" required>
@@ -63,21 +64,21 @@ export function AddRoomForm({ properties }: { properties: { id: string, name: st
                 </div>
 
                 <div>
-                    <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="name" className={styles.label}>
                         Room Number / Name
                     </label>
                     <input id="name" name="name" type="text" className="input" placeholder="e.g. 305" required />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className={styles.grid}>
                     <div>
-                        <label htmlFor="type" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                        <label htmlFor="type" className={styles.label}>
                             Type
                         </label>
                         <input id="type" name="type" type="text" className="input" placeholder="e.g. 1BR" />
                     </div>
                     <div>
-                        <label htmlFor="floor" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                        <label htmlFor="floor" className={styles.label}>
                             Floor
                         </label>
                         <input id="floor" name="floor" type="number" className="input" placeholder="e.g. 3" />
@@ -85,7 +86,7 @@ export function AddRoomForm({ properties }: { properties: { id: string, name: st
                 </div>
 
                 <div>
-                    <label htmlFor="section" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label htmlFor="section" className={styles.label}>
                         Section / Wing
                     </label>
                     <input id="section" name="section" type="text" className="input" placeholder="e.g. East Wing" />

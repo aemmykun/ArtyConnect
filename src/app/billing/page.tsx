@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import styles from "./billing.module.css"
 
 export default async function BillingPage() {
     const supabase = await createServerSupabaseClient()
@@ -33,50 +34,50 @@ export default async function BillingPage() {
     const estimatedMonthly = propertyCount * 3.50
 
     return (
-        <div className="container" style={{ padding: '4rem 1.5rem' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+        <div className={`container ${styles.pageContainer}`}>
+            <header className={styles.header}>
                 <div>
-                    <Link href="/" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.5rem', display: 'inline-block' }}>
+                    <Link href="/" className={styles.backLink}>
                         &larr; Back to Dashboard
                     </Link>
-                    <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Billing & Subscription</h1>
+                    <h1 className={styles.pageTitle}>Billing & Subscription</h1>
                 </div>
             </header>
 
             {/* Error Banner */}
             {org.subscription_status !== 'active' && (
-                <div style={{ marginBottom: '2rem', padding: '1rem', background: '#fee2e2', color: '#b91c1c', borderRadius: 'var(--radius)', border: '1px solid #fecaca' }}>
+                <div className={styles.errorBanner}>
                     <strong>Subscription Required:</strong> Please activate your subscription to access PMS features.
                 </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem' }}>
+            <div className={styles.contentGrid}>
 
                 {/* Plan Details */}
                 <div className="card">
-                    <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Current Plan</h2>
+                    <h2 className={styles.cardTitle}>Current Plan</h2>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div style={{ padding: '1.5rem', background: 'var(--background)', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>ArtyConnect Platform</h3>
-                                <span style={{ padding: '0.25rem 0.75rem', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600 }}>
+                    <div className={styles.detailsList}>
+                        <div className={styles.planInfo}>
+                            <div className={styles.planHeader}>
+                                <h3 className={styles.planName}>ArtyConnect Platform</h3>
+                                <span className={styles.planBadge}>
                                     STANDARD
                                 </span>
                             </div>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                            <p className={styles.planDescription}>
                                 Full access to housekeeping management features.
                             </p>
                         </div>
 
                         <div>
-                            <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '1rem' }}>Pricing Breakdown</h3>
-                            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h3 className={styles.sectionTitle}>Pricing Breakdown</h3>
+                            <ul className={styles.pricingList}>
+                                <li className={styles.pricingItem}>
                                     <span>Integration Setup Fee (One-time)</span>
                                     <strong>AU$1,500.00</strong>
                                 </li>
-                                <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <li className={styles.pricingItem}>
                                     <span>Subscription Rate</span>
                                     <strong>AU$3.50 / room / month</strong>
                                 </li>
@@ -86,24 +87,24 @@ export default async function BillingPage() {
                 </div>
 
                 {/* Summary / Action */}
-                <div className="card" style={{ height: 'fit-content' }}>
-                    <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Estimated Costs</h2>
+                <div className={`card ${styles.summaryCard}`}>
+                    <h2 className={styles.summaryTitle}>Estimated Costs</h2>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                            <span style={{ color: 'var(--text-muted)' }}>Active Rooms</span>
+                    <div className={styles.costBreakdown}>
+                        <div className={styles.costItem}>
+                            <span className={styles.costLabel}>Active Rooms</span>
                             <span>{propertyCount}</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.1rem', fontWeight: 600, borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+                        <div className={styles.totalItem}>
                             <span>Monthly Total</span>
                             <span>AU${estimatedMonthly.toFixed(2)}</span>
                         </div>
                     </div>
 
-                    <button className="btn btn-primary" style={{ width: '100%' }}>
+                    <button className={`btn btn-primary ${styles.actionButton}`}>
                         Manage Subscription
                     </button>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem', textAlign: 'center' }}>
+                    <p className={styles.footerNote}>
                         Payments are processed securely via Stripe.
                     </p>
                 </div>

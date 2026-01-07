@@ -1,0 +1,121 @@
+.container {
+    padding: 4rem 1.5rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    background: linear-gradient(to right, var(--primary), #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.orgName {
+    color: var(--text-muted);
+}
+
+.divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+}
+
+.signOutButton {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.dashboardTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.dashboardDescription {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.statGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.statCard {
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.statTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.roleBadge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.orgId {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.linkGrid {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.actionCard {
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.actionCard:hover {
+    transform: translateY(-2px);
+}
+
+.primaryAction {
+    border: 1px solid var(--primary) !important;
+}
+
+.primaryActionTitle {
+    color: var(--primary);
+}
+
+.cardTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+}

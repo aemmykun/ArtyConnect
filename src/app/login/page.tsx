@@ -3,6 +3,7 @@
 import { createBrowserSupabaseClient } from "@/lib/supabase/client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import styles from "./login.module.css"
 
 export default function LoginPage() {
     const [email, setEmail] = useState("")
@@ -45,26 +46,19 @@ export default function LoginPage() {
     }
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-                <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '0.5rem', textAlign: 'center' }}>
+        <div className={styles.container}>
+            <div className={`card ${styles.card}`}>
+                <h1 className={styles.title}>
                     Welcome Back
                 </h1>
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2rem' }}>
+                <p className={styles.subtitle}>
                     Sign in to your account
                 </p>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className={styles.actionsContainer}>
                     <button
                         onClick={handleGoogleLogin}
-                        className="btn"
-                        style={{
-                            background: 'white',
-                            color: '#333',
-                            border: '1px solid #ddd',
-                            display: 'flex',
-                            gap: '0.5rem'
-                        }}
+                        className={`btn ${styles.googleButton}`}
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24">
                             <path
@@ -87,19 +81,19 @@ export default function LoginPage() {
                         Continue with Google
                     </button>
 
-                    <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                    <div className={styles.divider}>
                         OR
                     </div>
 
-                    <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <form onSubmit={handleLogin} className={styles.form}>
                         {error && (
-                            <div style={{ padding: '0.75rem', borderRadius: 'var(--radius)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontSize: '0.875rem' }}>
+                            <div className={styles.error}>
                                 {error}
                             </div>
                         )}
 
                         <div>
-                            <label htmlFor="email" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                            <label htmlFor="email" className={styles.label}>
                                 Email
                             </label>
                             <input
@@ -114,7 +108,7 @@ export default function LoginPage() {
                         </div>
 
                         <div>
-                            <label htmlFor="password" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                            <label htmlFor="password" className={styles.label}>
                                 Password
                             </label>
                             <input
@@ -128,7 +122,7 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '1rem' }}>
+                        <button type="submit" className={`btn btn-primary ${styles.submitButton}`} disabled={loading}>
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
                     </form>

@@ -14,7 +14,7 @@
 /coverage
 
 # next.js
-/.next/
+# /.next/
 # Keep custom error pages under version control
 !/.next/server/app/_global-error.html
 !/.next/server/app/_not-found.html

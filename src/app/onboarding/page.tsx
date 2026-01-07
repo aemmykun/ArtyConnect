@@ -2,6 +2,7 @@
 
 import { createOrganization } from "../actions"
 import { useState } from "react"
+import styles from "./onboarding.module.css"
 
 export default function OnboardingPage() {
     const [error, setError] = useState("")
@@ -21,24 +22,24 @@ export default function OnboardingPage() {
     }
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="card" style={{ width: '100%', maxWidth: '500px' }}>
-                <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold', marginBottom: '0.5rem', textAlign: 'center' }}>
+        <div className={styles.container}>
+            <div className={`card ${styles.card}`}>
+                <h1 className={styles.title}>
                     Setup Your Organization
                 </h1>
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center', marginBottom: '2rem' }}>
+                <p className={styles.description}>
                     Create a new workspace for your housekeeping team.
                 </p>
 
-                <form action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <form action={handleSubmit} className={styles.form}>
                     {error && (
-                        <div style={{ padding: '0.75rem', borderRadius: 'var(--radius)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontSize: '0.875rem' }}>
+                        <div className={styles.errorMessage}>
                             {error}
                         </div>
                     )}
 
                     <div>
-                        <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                        <label htmlFor="name" className={styles.label}>
                             Organization Name
                         </label>
                         <input
@@ -51,7 +52,7 @@ export default function OnboardingPage() {
                         />
                     </div>
 
-                    <button type="submit" className="btn btn-primary" disabled={loading} style={{ marginTop: '1rem' }}>
+                    <button type="submit" className={`btn btn-primary ${styles.submitButton}`} disabled={loading}>
                         {loading ? 'Creating...' : 'Create Organization'}
                     </button>
                 </form>

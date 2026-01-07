@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { AddJobForm } from "./add-job-form"
 import { JobCard } from "./job-card"
 import { checkSubscription } from "@/lib/subscription"
+import styles from "./jobs.module.css"
 
 export default async function JobsPage() {
     const supabase = await createServerSupabaseClient()
@@ -46,22 +47,22 @@ export default async function JobsPage() {
         .select("user_id, role, profiles(full_name, email)")
 
     return (
-        <div className="container" style={{ padding: '4rem 1.5rem' }}>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4rem' }}>
+        <div className={`container ${styles.pageContainer}`}>
+            <header className={styles.header}>
                 <div>
-                    <Link href="/" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.5rem', display: 'inline-block' }}>
+                    <Link href="/" className={styles.backLink}>
                         &larr; Back to Dashboard
                     </Link>
-                    <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>Jobs</h1>
+                    <h1 className={styles.title}>Jobs</h1>
                 </div>
             </header>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem' }}>
+            <div className={styles.contentGrid}>
                 {/* List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className={styles.jobList}>
                     {jobs?.length === 0 ? (
-                        <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
-                            <p style={{ color: 'var(--text-muted)' }}>No jobs scheduled. Create one!</p>
+                        <div className={`card ${styles.emptyState}`}>
+                            <p className={styles.emptyText}>No jobs scheduled. Create one!</p>
                         </div>
                     ) : (
                         jobs?.map((job) => (
